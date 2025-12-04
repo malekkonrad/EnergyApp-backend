@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 @Tag(name = "Energy API", description = "Endpoints for energy mix and charging window data")
 public class EnergyController {
 
