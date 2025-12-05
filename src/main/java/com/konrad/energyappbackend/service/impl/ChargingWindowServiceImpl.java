@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class ChargingWindowServiceImpl implements ChargingWindowService {
@@ -24,7 +23,6 @@ public class ChargingWindowServiceImpl implements ChargingWindowService {
     public ChargingWindowServiceImpl(GenerationClient generationClient) {
         this.generationClient = generationClient;
     }
-
 
     @Override
     public ChargingWindowDto getOptimalWindow(int hours) {
@@ -41,8 +39,6 @@ public class ChargingWindowServiceImpl implements ChargingWindowService {
         GenerationResponse response = generationClient.getGenerationInterval(from, to);
         List<GenerationData> dataList = response.data();
 
-        System.out.println(dataList);
-
         ///  sliding window
         int windowSize = hours * INTERVALS_PER_HOUR;
         double maxCleanPercentage = 0.0;
@@ -54,7 +50,6 @@ public class ChargingWindowServiceImpl implements ChargingWindowService {
         for (GenerationData data : dataList) {
             cleanPercentageList.add(EnergySource.calculateCleanPercentage(data.generationMix()));
         }
-
 
         for (int i = 0; i <= cleanPercentageList.size() - windowSize; i++) {
             List<Double> window = cleanPercentageList.subList(i, i + windowSize);
@@ -76,10 +71,5 @@ public class ChargingWindowServiceImpl implements ChargingWindowService {
         double averageCleanPercentage = maxCleanPercentage / windowSize;
 
         return new ChargingWindowDto(bestStart, bestEnd, averageCleanPercentage);
-
     }
-
-
-
-
 }

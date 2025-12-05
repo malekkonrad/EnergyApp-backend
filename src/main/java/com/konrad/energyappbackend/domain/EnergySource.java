@@ -10,25 +10,43 @@ import java.util.stream.Collectors;
 
 /**
  * Energy sources as defined by the Carbon Intensity API.
- * Each source is categorized as clean (renewable + nuclear) or non-clean.
  *
- * This enum encapsulates all energy source logic, eliminating the need for a separate utility class.
+ * <p>Each source is categorized as either clean (renewable + nuclear) or non-clean (fossil fuels).
+ * This classification is used to calculate the clean energy percentage in the UK grid mix.
+ *
+ * <h3>Clean Energy Sources:</h3>
+ * <ul>
+ *   <li>Biomass</li>
+ *   <li>Nuclear</li>
+ *   <li>Hydro</li>
+ *   <li>Wind</li>
+ *   <li>Solar</li>
+ * </ul>
+ *
+ * <h3>Non-Clean Energy Sources:</h3>
+ * <ul>
+ *   <li>Coal</li>
+ *   <li>Gas</li>
+ *   <li>Imports</li>
+ *   <li>Other</li>
+ * </ul>
+ *
+ * @see <a href="https://carbonintensity.github.io/api-definitions/">Carbon Intensity API Documentation</a>
  */
 @Getter
 public enum EnergySource {
-    // Clean energy sources (renewable + nuclear)
+    // Clean energy sources
     BIOMASS(true),
     NUCLEAR(true),
     HYDRO(true),
     WIND(true),
     SOLAR(true),
 
-    // Non-clean energy sources (fossil fuels + imports)
+    // Non-clean energy sources
     COAL(false),
     GAS(false),
     IMPORTS(false),
     OTHER(false);
-
 
     private final boolean isClean;
 
@@ -38,7 +56,8 @@ public enum EnergySource {
 
     /**
      * Parses fuel name from API response to EnergySource enum.
-     * Case-insensitive matching.
+     *
+     * <p>Matching is case-insensitive. Leading/trailing whitespace is ignored.
      *
      * @param fuelName name from API (e.g., "biomass", "COAL", "Wind")
      * @return corresponding EnergySource or null if not recognized
